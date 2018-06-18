@@ -2,7 +2,7 @@
 $pwd = 'ca8db27f5bd4dc18da6776e4b5c52569'; //It must be in md5. Abc1234. by default
 $limit = '1000000'; //Number of bytes maximum. Default 1000000 bytes
 $files_allowed = ['jpg','png']; //Array of allowed file extensions
-$target_dir = __DIR__.'/files/';
+$target_dir = __DIR__.'/files/'; //Where are the files going to be stored
 //*********************************************************************************
 function creasinoexiste($dir,$modo=02775) {
   if(!$dir) {
