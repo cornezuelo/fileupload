@@ -1,5 +1,5 @@
 <?php
-$pwd = 'ca8db27f5bd4dc18da6776e4b5c52569'; //It must be in md5. Abc1234. by default
+$pwd = 'ca8db27f5bd4dc18da6776e4b5c52569'; //It must be in md5. Abc1234. by default. Set to false, null or empty string for disallowing this feature.
 $limit = '1000000'; //Number of bytes maximum. Default 1000000 bytes
 $files_allowed = ['jpg','png']; //Array of allowed file extensions
 $target_dir = __DIR__.'/files/'; //Where are the files going to be stored
@@ -36,11 +36,11 @@ function formatBytes($bytes, $precision = 2) {
 //*********************************************************************************
 creasinoexiste($target_dir); //Creates the dir if it doesn't exist
 $msg = '';
-if (isset($_FILES['file']) && isset($_REQUEST['pwd'])) {  
+if (isset($_FILES['file'])) {  
   $fileType = strtolower(pathinfo(basename($_FILES["file"]["name"]),PATHINFO_EXTENSION));
   $target_file = $target_dir . uniqid() .'.'.$fileType;
   //Pwd check
-  if (md5($_REQUEST['pwd']) !== $pwd) {
+  if (!empty($pwd) && md5($_REQUEST['pwd']) !== $pwd) {
     $msg = '<div class="alert alert-danger" role="alert"><b>¡Error!</b> Incorrect password.</div>';
   } 
   //Limit check
@@ -140,12 +140,14 @@ if (isset($_FILES['file']) && isset($_REQUEST['pwd'])) {
           <p class="shadow">Upload and share your files directly.</p>
           <p class="shadow">          
             <form id="form" method="POST" enctype="multipart/form-data">
-              <div class="form-group row">
-                <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
-                  <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="pwd">
-                </div>                          
-              </div>              
+              <?php if (!empty($pwd)) { ?>
+                <div class="form-group row">
+                  <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="pwd">
+                  </div>                          
+                </div>            
+              <?php } ?>
               <div class="form-group row">
                 <label for="inputFile" class="col-sm-2 col-form-label">File</label>
                 <div class="col-sm-10">
